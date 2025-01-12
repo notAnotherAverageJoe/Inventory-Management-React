@@ -79,20 +79,25 @@ const Products = () => {
   };
 
   return (
-    <div>
-      <h1>Product List</h1>
+    <div className="container mx-auto p-6">
+      <h1 className="text-3xl font-semibold mb-4">Product List</h1>
 
-      <ul>
+      {/* Render product list with edit and delete buttons */}
+      <ul className="space-y-4">
         {products.map((product) => (
-          <li key={product.id}>
+          <li
+            key={product.id}
+            className="flex justify-between items-center border p-4 rounded-lg shadow-md"
+          >
             {editingProduct && editingProduct.id === product.id ? (
-              <>
+              <div className="space-y-2">
                 <input
                   type="text"
                   name="name"
                   value={newProduct.name}
                   onChange={handleInputChange}
                   placeholder="Product Name"
+                  className="w-full p-2 border border-gray-300 rounded"
                 />
                 <input
                   type="text"
@@ -100,6 +105,7 @@ const Products = () => {
                   value={newProduct.sku}
                   onChange={handleInputChange}
                   placeholder="SKU"
+                  className="w-full p-2 border border-gray-300 rounded"
                 />
                 <input
                   type="number"
@@ -107,6 +113,7 @@ const Products = () => {
                   value={newProduct.price}
                   onChange={handleInputChange}
                   placeholder="Price"
+                  className="w-full p-2 border border-gray-300 rounded"
                 />
                 <input
                   type="number"
@@ -114,6 +121,7 @@ const Products = () => {
                   value={newProduct.quantity}
                   onChange={handleInputChange}
                   placeholder="Quantity"
+                  className="w-full p-2 border border-gray-300 rounded"
                 />
                 <input
                   type="text"
@@ -121,19 +129,33 @@ const Products = () => {
                   value={newProduct.category}
                   onChange={handleInputChange}
                   placeholder="Category"
+                  className="w-full p-2 border border-gray-300 rounded"
                 />
-                <button onClick={updateProduct}>Save</button>
-              </>
+                <button
+                  onClick={updateProduct}
+                  className="mt-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+                >
+                  Save
+                </button>
+              </div>
             ) : (
-              <>
-                <span>
+              <div className="flex items-center space-x-4">
+                <span className="font-medium">
                   {product.name} - ${product.price}
                 </span>
-                <button onClick={() => startEditing(product)}>Edit</button>
-                <button onClick={() => deleteProduct(product.id)}>
+                <button
+                  onClick={() => startEditing(product)}
+                  className="px-4 py-2 bg-yellow-500 text-white rounded hover:bg-yellow-600"
+                >
+                  Edit
+                </button>
+                <button
+                  onClick={() => deleteProduct(product.id)}
+                  className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"
+                >
                   Delete
                 </button>
-              </>
+              </div>
             )}
           </li>
         ))}

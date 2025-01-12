@@ -23,10 +23,6 @@ pool.query("SELECT NOW()", (err, res) => {
 // API Routes
 app.use("/api/products", productRoutes);
 
-app.get("/", (req, res) => {
-  res.send("Home page WIP");
-});
-
 app.listen(PORT, () => {
   console.log(`Server is running at http://localhost:${PORT}`);
 });
