@@ -82,7 +82,6 @@ const Products = () => {
     <div>
       <h1>Product List</h1>
 
-      {/* Render product list with edit and delete buttons */}
       <ul>
         {products.map((product) => (
           <li key={product.id}>
