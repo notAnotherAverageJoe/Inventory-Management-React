@@ -11,38 +11,37 @@ const Products = () => {
     quantity: "",
     category: "",
   });
+  const [searchTerm, setSearchTerm] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage] = useState(5);
+
   useEffect(() => {
     axios
       .get("http://localhost:5000/api/products")
       .then((response) => {
-        console.log("Fetched products:", response.data);
         setProducts(response.data);
       })
       .catch((error) => {
         console.error("There was an error fetching the products!", error);
       });
-  }, [products]); // You can add products as a dependency for testing purposes
+  }, []);
 
-  // Delete a product
   const deleteProduct = (id) => {
     axios
       .delete(`http://localhost:5000/api/products/${id}`)
-      .then((response) => {
+      .then(() => {
         setProducts(products.filter((product) => product.id !== id));
-        console.log("Product deleted successfully:", response.data);
       })
       .catch((error) => {
         console.error("There was an error deleting the product!", error);
       });
   };
 
-  // Start editing a product
   const startEditing = (product) => {
     setEditingProduct(product);
     setNewProduct({ ...product });
   };
 
-  // Update a product
   const updateProduct = () => {
     axios
       .put(
@@ -68,7 +67,6 @@ const Products = () => {
       });
   };
 
-  // Handle input changes for the product form
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setNewProduct((prevProduct) => ({
@@ -77,13 +75,40 @@ const Products = () => {
     }));
   };
 
+  const filteredProducts = products.filter((product) =>
+    product.name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
+  const totalPages = Math.ceil(filteredProducts.length / itemsPerPage);
+  const currentProducts = filteredProducts.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  );
+
+  const handleNextPage = () => {
+    if (currentPage < totalPages) setCurrentPage(currentPage + 1);
+  };
+
+  const handlePrevPage = () => {
+    if (currentPage > 1) setCurrentPage(currentPage - 1);
+  };
+
   return (
     <div className="container mx-auto p-6">
       <h1 className="text-3xl font-semibold mb-4">Product List</h1>
 
-      {/* Render product list with edit and delete buttons */}
+      {/* Search Bar */}
+      <input
+        type="text"
+        placeholder="Search products..."
+        value={searchTerm}
+        onChange={(e) => setSearchTerm(e.target.value)}
+        className="w-full p-2 mb-4 border border-gray-300 rounded"
+      />
+
+      {/* Render product list */}
       <ul className="space-y-4">
-        {products.map((product) => (
+        {currentProducts.map((product) => (
           <li
             key={product.id}
             className="flex justify-between items-center border p-4 rounded-lg shadow-md"
@@ -159,6 +184,27 @@ const Products = () => {
           </li>
         ))}
       </ul>
+
+      {/* Pagination Controls */}
+      <div className="flex justify-between items-center mt-4">
+        <button
+          onClick={handlePrevPage}
+          disabled={currentPage === 1}
+          className="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400 disabled:bg-gray-200"
+        >
+          Previous
+        </button>
+        <span>
+          Page {currentPage} of {totalPages}
+        </span>
+        <button
+          onClick={handleNextPage}
+          disabled={currentPage === totalPages}
+          className="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400 disabled:bg-gray-200"
+        >
+          Next
+        </button>
+      </div>
     </div>
   );
 };
