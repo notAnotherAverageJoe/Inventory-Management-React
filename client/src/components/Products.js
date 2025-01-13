@@ -11,18 +11,17 @@ const Products = () => {
     quantity: "",
     category: "",
   });
-
-  // Fetch products from the backend
   useEffect(() => {
     axios
       .get("http://localhost:5000/api/products")
       .then((response) => {
+        console.log("Fetched products:", response.data);
         setProducts(response.data);
       })
       .catch((error) => {
         console.error("There was an error fetching the products!", error);
       });
-  }, []);
+  }, [products]); // You can add products as a dependency for testing purposes
 
   // Delete a product
   const deleteProduct = (id) => {

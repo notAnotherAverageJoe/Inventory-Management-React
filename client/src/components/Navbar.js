@@ -22,6 +22,12 @@ const Navbar = () => {
           >
             Add Product
           </Link>
+          <Link
+            to="/report"
+            className="hover:text-gray-300 transition duration-200"
+          >
+            Reports
+          </Link>
         </div>
       </div>
     </nav>
