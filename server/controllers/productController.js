@@ -99,5 +99,5 @@ module.exports = {
   createProduct,
   updateProduct,
   deleteProduct,
-  getRawProducts, // For internal use only
+  getRawProducts,
 };
