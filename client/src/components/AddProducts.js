@@ -7,6 +7,7 @@ const AddProduct = () => {
   const [productPrice, setProductPrice] = useState("");
   const [productQuantity, setProductQuantity] = useState("");
   const [productCategory, setProductCategory] = useState("");
+  const [successMessage, setSuccessMessage] = useState(""); // State for success message
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -19,6 +20,17 @@ const AddProduct = () => {
         quantity: productQuantity,
         category: productCategory,
       });
+
+      // Set success message
+      setSuccessMessage("Product added successfully!");
+
+      // Clear form fields
+      setProductName("");
+      setProductSku("");
+      setProductPrice("");
+      setProductQuantity("");
+      setProductCategory("");
+
       console.log("Product added:", response.data);
     } catch (error) {
       console.error("Error adding product:", error);
@@ -30,6 +42,11 @@ const AddProduct = () => {
       <h2 className="text-2xl font-semibold text-center mb-6">
         Add New Product
       </h2>
+      {successMessage && ( // Display success message if it exists
+        <div className="mb-4 p-4 text-green-700 bg-green-100 border border-green-300 rounded-lg">
+          {successMessage}
+        </div>
+      )}
       <form onSubmit={handleSubmit}>
         <div className="mb-4">
           <label className="block text-lg font-medium text-gray-700 mb-2">
